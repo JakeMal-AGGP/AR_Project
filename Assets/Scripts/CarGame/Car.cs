@@ -6,9 +6,10 @@ public class Car
 {
     public Car()
     {
-        speed = .1f;
+        speed = 0.75f; ;
     }
 
     public float speed;
+    public float factor;
 
 }

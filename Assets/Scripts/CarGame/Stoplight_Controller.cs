@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vuforia;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Stoplight_Controller : MonoBehaviour, IVirtualButtonEventHandler
 {
@@ -12,9 +13,7 @@ public class Stoplight_Controller : MonoBehaviour, IVirtualButtonEventHandler
     public Plane plane1, plane2, plane3, plane4;
     public Material red_lit, red_dim, green_lit, green_dim;
 
-    public GameObject scene;
-    public GameObject car;
-    public GameObject carSpawn;
+    public CarSpawner game;
 
     void Start()
     {
@@ -47,34 +46,46 @@ public class Stoplight_Controller : MonoBehaviour, IVirtualButtonEventHandler
 
     }
 
-    public void OnButtonReleased(VirtualButtonBehaviour vb)
+    public void OnButtonReleased(VirtualButtonBehaviour vb) // Virtual button released...
     {
 
-        if (vb.VirtualButtonName == button1.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
+
+        if(!game.gameActive) // If game isn't active (which only occurs when game has ended), restart game
         {
-            setLight(plane1);
-        }
-        else if(vb.VirtualButtonName == button2.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
-        {
-            setLight(plane2);
-        }
-        else if(vb.VirtualButtonName == button3.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
-        {
-            setLight(plane3);
-        }
-        else if(vb.VirtualButtonName == button4.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
-        {
-            setLight(plane4);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        GameObject c = Instantiate(car, carSpawn.transform.localPosition, Quaternion.identity);
-        c.transform.parent = scene.transform;
+        if(!game.startGame) // If game isn't started, start game
+        {
+            game.startGame = true;
+        }
+        else // Stoplight Control while game is active
+        {
+            if (vb.VirtualButtonName == button1.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
+            {
+                setLight(plane1);
+
+            }
+            else if (vb.VirtualButtonName == button2.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
+            {
+                setLight(plane2);
+            }
+            else if (vb.VirtualButtonName == button3.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
+            {
+                setLight(plane3);
+            }
+            else if (vb.VirtualButtonName == button4.GetComponent<VirtualButtonBehaviour>().VirtualButtonName)
+            {
+                setLight(plane4);
+            }
+        }
+
+        
+
     }
 
     void setLight(Plane plane)
     {
-
-        
 
         if(plane.isGreen)
         {

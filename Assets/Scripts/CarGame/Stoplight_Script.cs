@@ -7,23 +7,8 @@ public class Stoplight_Script : MonoBehaviour
 
     public GameObject objRed, objGreen;
     public Material red_lit, green_lit, red_dim, green_dim;
+    public GameObject stoplightTrigger;
 
-
-    private void Awake()
-    {
-        
-    }
-
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-       
-    }
 
     public void setLights(bool status)
     {
@@ -31,12 +16,14 @@ public class Stoplight_Script : MonoBehaviour
         {
             objGreen.GetComponent<Renderer>().material = green_lit;
             objRed.GetComponent<Renderer>().material = red_dim;
+            stoplightTrigger.SetActive(false);
 
             return;
         }
 
         objGreen.GetComponent<Renderer>().material = green_dim;
         objRed.GetComponent<Renderer>().material = red_lit;
+        stoplightTrigger.SetActive(true);
 
     }
 
